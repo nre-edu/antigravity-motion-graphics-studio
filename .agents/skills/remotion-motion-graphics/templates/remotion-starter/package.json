@@ -1,0 +1,19 @@
+{
+  "name": "antigravity-remotion-episode",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "remotion studio src/index.ts --no-open",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "remotion": "4.0.540",
+    "@remotion/cli": "4.0.540",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/react": "19.2.7"
+  }
+}
