@@ -1,8 +1,10 @@
 import React from 'react';
 import {
 	AbsoluteFill,
+	Img,
 	interpolate,
 	spring,
+	staticFile,
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
@@ -169,6 +171,75 @@ export const GridBackground: React.FC<{
 					background: 'linear-gradient(90deg, #1d4ed8, #7c3aed, #f59e0b)',
 				}}
 			/>
+		</AbsoluteFill>
+	);
+};
+
+// Scene Card component for Storyboard / Generated Scene Images
+export const AnimatedSceneCard: React.FC<{
+	imagePath: string;
+	durationInFrames: number;
+	children?: React.ReactNode;
+}> = ({imagePath, durationInFrames, children}) => {
+	const frame = useCurrentFrame();
+	const {fps} = useVideoConfig();
+
+	const enterSpring = spring({
+		frame,
+		fps,
+		config: {damping: 14, stiffness: 140, mass: 0.8},
+	});
+
+	const enterOpacity = interpolate(frame, [0, 8], [0, 1], {
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
+
+	const enterBlur = interpolate(frame, [0, 10], [14, 0], {
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
+
+	const pushIn = interpolate(frame, [0, durationInFrames], [1.0, 1.05], {
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
+
+	const floatY = Math.sin(frame / 14) * 6;
+
+	return (
+		<AbsoluteFill
+			style={{
+				alignItems: 'center',
+				justifyContent: 'center',
+				paddingTop: 110,
+				paddingBottom: 110,
+			}}
+		>
+			<div
+				style={{
+					width: 900,
+					height: 1350,
+					borderRadius: 48,
+					overflow: 'hidden',
+					position: 'relative',
+					boxShadow: '0 32px 85px rgba(15, 23, 42, 0.18), 0 0 0 3px #ffffff',
+					transform: `scale(${0.92 + 0.08 * enterSpring}) translateY(${floatY}px)`,
+					opacity: enterOpacity,
+					filter: `blur(${enterBlur}px)`,
+				}}
+			>
+				<Img
+					src={staticFile(imagePath)}
+					style={{
+						width: '100%',
+						height: '100%',
+						objectFit: 'cover',
+						transform: `scale(${pushIn})`,
+					}}
+				/>
+				{children}
+			</div>
 		</AbsoluteFill>
 	);
 };

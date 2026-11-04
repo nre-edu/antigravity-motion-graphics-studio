@@ -6,7 +6,7 @@
 
 ## 🚀 دليل الاستخدام السريع للمستخدم (How to Use)
 
-إذا كنت تستخدم **Google Antigravity** أو تعمل على هذا المستودع، فإن استخدام المهارة بسيط وتفاعلي للغاية:
+إذا كنت تستخدم **Google Antigravity** أو تعمل على هذا المستودع، فإن المهارة تعمل بـ **نمطين ذكيين (Dual-Mode)**:
 
 ### 1. ما تكتبه في المحادثة (الطلب المبدئي)
 يكفي أن تطلب من المساعد البدء في حلقة جديدة وتحدد الفكرة:
@@ -15,13 +15,17 @@
 ### 2. ما تجهزه أنت فقط (User Inputs)
 1. **المرجع:** ضع الفيديو المرجعي أو الصور/الإنفوجراف داخل مجلد `reference/`.
 2. **الصوت:** بعد أن يصيغ لك المساعد الاسكربت مدمجاً بتاجات المشاعر، انسخه إلى **Google AI Studio**، وقم بتوليد الصوت ثم ضعه في `public/voice.wav`.
+3. **صور المشاهد أو الستوري بورد (اختياري - Optional):**
+   * **إذا أردت دعماً بصرياً أعلى:** ضع لوحة ستوري بورد (مثل `motion-storyboard.png`) أو صور المشاهد في مجلد `scenes/` ليتم تحريكها كبطاقات سينمائية.
+   * **إذا لم تضع صوراً:** ستتولى المهارة برمجة وتوليد جميع العناصر البصرية والأشكال ثلاثية الأبعاد والنصوص بالكود بالكامل (Code-First) كالمعتاد!
 
 ### 3. ما يقوم به Antigravity تلقائياً
 1. **يسألك أولاً:** عن مقاس الفيديو المطلوب (`9:16` ريل/شورت، `16:9` أفقي، `1:1` مربع، أو `4:5`) وعما إذا كنت ترغب في إضافة اسمك/توقيعك.
 2. **يحلل المرجع:** يقيس الألوان، طول اللقطات، وسرعة الحركة.
 3. **يحلل الصوت:** يستخرج بداية ونهاية كل جملة بالمللي ثانية ويحوّلها إلى أرقام إطارات (`Frames @ 30fps`).
-4. **يولّد المؤثرات الصوتية (`sfx.wav`):** موسيقى خلفية هادئة + مؤثرات Whoosh + نقرات Pop + ضربة الختام.
-5. **يبرمج ويصدّر الفيديو:** يكتب المشاهد بكود Remotion مع تطبيق قواعد الطباعة العربية الصارمة ويصدّر لك ملف الفيديو النهائي `.mp4`.
+4. **يتعامل مع المشاهد:** يقطّع لوحة الستوري بورد أو يربط المشاهد إن وُجدت، أو يولّد الرسوم البرمجية إن لم توجد.
+5. **يولّد المؤثرات الصوتية (`sfx.wav`):** موسيقى خلفية هادئة + مؤثرات Whoosh + نقرات Pop + ضربة الختام.
+6. **يبرمج ويصدّر الفيديو:** يكتب المشاهد بكود Remotion مع تطبيق قواعد الطباعة العربية الصارمة ويصدّر لك ملف الفيديو النهائي `.mp4`.
 
 ---
 
@@ -31,12 +35,13 @@
 [`.agents/skills/remotion-motion-graphics/SKILL.md`](./.agents/skills/remotion-motion-graphics/SKILL.md)
 
 وتضم الوحدات التالية:
-* **دليل التشغيل الآلي ([`SKILL.md`](./.agents/skills/remotion-motion-graphics/SKILL.md)):** خطوات سؤال المستخدم عن المقاس والتوقيع، تحليل المرجع، كتابة الاسكربت بتاجات المشاعر، وبناء مشاهد Remotion.
+* **دليل التشغيل الآلي ([`SKILL.md`](./.agents/skills/remotion-motion-graphics/SKILL.md)):** خطوات سؤال المستخدم، النمطين التوليدي والمدعوم بالمشاهد، تحليل المرجع، كتابة الاسكربت بتاجات المشاعر، وبناء مشاهد Remotion.
 * **مرجع الطباعة العربية والمقاسات ([`arabic-typography-and-formats.md`](./.agents/skills/remotion-motion-graphics/references/arabic-typography-and-formats.md)):** قواعد اتصال الحروف العربية، المناطق الآمنة (`Safe Zones`) لكل منصة، الخطوط الحرة (`OFL`)، وربط تاجات المشاعر بطابع الحركة.
 * **محلل المرجع الآلي ([`analyze_ref.py`](./.agents/skills/remotion-motion-graphics/scripts/analyze_ref.py)):** يقيس طول اللقطات، القطعات لكل 10 ثوانٍ، يستخرج أبرز 6 ألوان (`palette`) بنسبها، ويولّد لوحات `opening.jpg` و`shots.jpg` و`timeline.jpg`.
 * **محلل توقيتات الصوت ([`analyze_voice_timings.py`](./.agents/skills/remotion-motion-graphics/scripts/analyze_voice_timings.py)):** يستخرج توقيت كل جملة بالثواني والإطارات (`Frames @ 30fps`) عبر `FFmpeg Silence Detection`.
+* **مقطّع لوحات الستوري بورد ([`slice_storyboard.py`](./.agents/skills/remotion-motion-graphics/scripts/slice_storyboard.py)):** يقطّع آلياً لوحات المشاهد المجمّعة (مثل شبكات 4×2 أو 3×2) إلى صور مشاهد عالية الدقة لمكون `AnimatedSceneCard`.
 * **مولّد المؤثرات الصوتية ([`generate_sfx.py`](./.agents/skills/remotion-motion-graphics/scripts/generate_sfx.py)):** يولّد برمجياً ملف `sfx.wav` (موسيقى خلفية تقنية هادئة + مؤثرات انتقال + نقرات + عدّاد + ارتطام الهدف).
-* **قالب مشروع Remotion الجاهز ([`templates/remotion-starter/`](./.agents/skills/remotion-motion-graphics/templates/remotion-starter)):** يضم المكونات البصرية الجاهزة (`Sphere3D`, `SelectionBox`, `SparkleStar`, `GridBackground`, `FORMATS`) في [`MotionPrimitives.tsx`](./.agents/skills/remotion-motion-graphics/templates/remotion-starter/src/components/MotionPrimitives.tsx).
+* **قالب مشروع Remotion الجاهز ([`templates/remotion-starter/`](./.agents/skills/remotion-motion-graphics/templates/remotion-starter)):** يضم المكونات البصرية الجاهزة (`Sphere3D`, `SelectionBox`, `SparkleStar`, `GridBackground`, `AnimatedSceneCard`, `FORMATS`) في [`MotionPrimitives.tsx`](./.agents/skills/remotion-motion-graphics/templates/remotion-starter/src/components/MotionPrimitives.tsx).
 
 ---
 
@@ -59,7 +64,7 @@
 
 ### 0️⃣ تحديد المقاس وخيار التوقيع (`Upfront Options`)
 * سؤال المستخدم عن **مقاس الفيديو** (`9:16` شورت/ريل، `16:9` فيديو أفقي، `1:1` مربع، أو `4:5`).
-* **قاعدة اسم المتحدث / التوقيع:** **لا يتم وضع اسم أو توقيع "دكتور محمد رفعت" في الاسكربت أو الفيديو إلا إذا طلب المستخدم ذلك صراحةً**، وفي حال لم يطلب يتم سؤاله أولاً قبل إضافته (وعند إضافته يُكتب نصاً صريحاً "دكتور محمد رفعت" في اسكربت الصوت لتجنب قراءة اختصار `د.` بشكل خاطئ).
+* **قاعدة اسم المتحدث / التوقيع:** **لا يتم وضع اسم أو توقيع "دكتور محمد رفعت / Dr. Mohamed Refat" في الاسكربت أو الفيديو إلا إذا طلب المستخدم ذلك صراحةً**، وفي حال لم يطلب يتم سؤاله أولاً قبل إضافته (وعند إضافته يُكتب نصاً صريحاً "دكتور محمد رفعت" في اسكربت الصوت لتجنب قراءة اختصار `د.` بشكل خاطئ).
 
 ### 1️⃣ تحليل المرجع الخاص بالحلقة (`reference/`)
 * تشغيل `analyze_ref.py` على مجلد `reference/` لاستخراج لوحات اللقطات (`opening.jpg`, `shots.jpg`, `timeline.jpg`) وملف القياسات اللونية والإيقاعية (`analysis.json`)، وتوثيق الهوية البصرية في `STYLE_GUIDE.md`.
@@ -79,7 +84,8 @@
 ### 3️⃣ تحليل التوقيتات الصوتية بالمللي ثانية (`FFmpeg Silence Detection`) ⏱️
 * فحص ملف `voice.wav` عبر سكربت `analyze_voice_timings.py` لاستخراج التوقيت الدقيق لبداية ونهاية كل جملة وكلمة مفتاحية، وتحويلها إلى أرقام إطارات (`Frames @ 30fps`).
 
-### 4️⃣ توليد المؤثرات الصوتية والخلفية الموسيقية برمجياً (`Procedural SFX`) 🔊
+### 4️⃣ إدارة المشاهد والمؤثرات الصوتية (`Scene Assets & Procedural SFX`) 🔊
+* إذا وُجدت لوحة ستوري بورد، تشغّل المهارة `slice_storyboard.py` لتقطيعها وتجهيز كروت المشاهد.
 * تشغيل سكربت `generate_sfx.py` لتوليد ملف `public/sfx.wav` متزامن مع إطارات الفيديو (خلفية موسيقية هادئة + `Whooshes` + `UI Pops` + `Ticks` + `Typing Clicks` + `Impact Hits`).
 
 ### 5️⃣ برمجة المشاهد وفحص الطباعة العربية وتصدير الفيديو (`Remotion Render`) 🚀
@@ -95,13 +101,14 @@ antigravity-motion-graphics-studio/
 ├── .agents/
 │   └── skills/
 │       └── remotion-motion-graphics/          # مهارة Antigravity المتكاملة
-│           ├── SKILL.md                       # ملف تعليمات المهارة الرئيسي
+│           ├── SKILL.md                       # ملف تعليمات المهارة الرئيسي (النمط المزدوج)
 │           ├── references/
 │           │   └── arabic-typography-and-formats.md
 │           ├── scripts/
 │           │   ├── analyze_ref.py
 │           │   ├── analyze_voice_timings.py
-│           │   └── generate_sfx.py
+│           │   ├── generate_sfx.py
+│           │   └── slice_storyboard.py
 │           └── templates/
 │               └── remotion-starter/          # قالب مشروع Remotion الجاهز
 │                   ├── package.json
